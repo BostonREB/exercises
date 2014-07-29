@@ -8,7 +8,6 @@ human_picks = []
 
 def ai_selects(frequent_pick, counters)
   frequent_pick = frequent_pick.to_sym
-  puts "RIGHT HERE #{counters[frequent_pick]}"
   computer_play = counters[frequent_pick].sample(1).first.to_sym
 end
 
@@ -20,8 +19,11 @@ while true
   frequent_pick = human_picks.group_by { |val| val }.values.max_by(&:size).first
   if game_play[input]
     puts "You played #{input.capitalize}"
-    puts game_count
-    computer_play = ai_selects(frequent_pick, counter_moves)
+    if game_count > 0
+      computer_play = ai_selects(frequent_pick, counter_moves)
+    else
+      computer_play = game_play.keys.sample(1).first
+    end
     puts "The Computer played #{computer_play.to_s.capitalize}"
     if game_play[input][computer_play]
       puts "#{input.capitalize} #{game_play[input][computer_play]} #{computer_play.capitalize}. You win!!\n\n"
@@ -34,10 +36,6 @@ while true
       ties = ties + 1
     end
     game_count = game_count + 1
-    puts "Human wins: #{human_wins}"
-    puts "Computer wins: #{computer_wins}"
-    puts "Tie games: #{ties}"
-    puts "Games played: #{game_count}"
   else
     puts "Please enter a valid choice.\n\n"
   end
