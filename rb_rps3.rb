@@ -19,7 +19,7 @@ while true
   frequent_pick = human_picks.group_by { |val| val }.values.max_by(&:size).first
   if game_play[input]
     puts "You played #{input.capitalize}"
-    if game_count > 0
+    if game_count > 1
       computer_play = ai_selects(frequent_pick, counter_moves)
     else
       computer_play = game_play.keys.sample(1).first
