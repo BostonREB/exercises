@@ -1,8 +1,22 @@
 class RockPaperScissors
 
   def initialize
-    @game_play = {rock: {scissors: "crushes", lizard: "crushes"}, paper: {spock: "disproves", rock: "covers"}, scissors: {paper: "cuts", lizard: "decapitates"}, lizard: {paper: "eats", spock: "poisons"}, spock: {scissors: "smashes", rock: "vaporizes"}}
-    @counter_moves = {rock: ["paper", "spock"], scissors: ["rock", "spock"], lizard: ["rock", "scissors"], paper: ["scissors", "lizard"], spock: ["paper", "lizard"]}
+    @game_play = {
+      rock: {scissors: "crushes", lizard: "crushes"},
+      paper: {spock: "disproves", rock: "covers"},
+      scissors: {paper: "cuts", lizard: "decapitates"},
+      lizard: {paper: "eats", spock: "poisons"},
+      spock: {scissors: "smashes", rock: "vaporizes"}
+    }
+
+    @counter_moves = {
+      rock: ["paper", "spock"],
+      scissors: ["rock", "spock"],
+      lizard: ["rock", "scissors"],
+      paper: ["scissors", "lizard"],
+      spock: ["paper", "lizard"]
+    }
+
     @human_wins = 0
     @computer_wins = 0
     @ties = 0
@@ -11,8 +25,22 @@ class RockPaperScissors
   end
 
   def ai_selects
-    frequent_pick = @human_picks.group_by { |pick| pick }.values.max_by(&:size).first.to_sym
-    computer_play = @counter_moves[frequent_pick].sample(1).first.to_sym
+    frequent_pick = @human_picks.group_by { |pick| pick }.values
+    count_high = 0
+    options = []
+    frequent_pick.each do |value|
+      pick_count = value.count
+      if pick_count >= count_high
+        count_high = pick_count
+      end
+      if value.count == count_high
+        value.each do |value|
+          options << value
+        end
+      end
+    end
+    likely_move = options.sample(1).first.to_sym
+    computer_play = @counter_moves[likely_move].sample(1).first.to_sym
   end
 
   def play_game
