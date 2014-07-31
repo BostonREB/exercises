@@ -1,4 +1,5 @@
 class RockPaperScissors
+  attr_accessor :game_play
 
   def initialize
     @game_play = {
@@ -49,7 +50,7 @@ class RockPaperScissors
       input = gets.chomp.downcase
       @human_picks << input
       input == '' ? break : (input = input.downcase.to_sym)
-      if @game_play[input]
+      if game_play[input]
         puts "You played #{input.capitalize}"
         find_winner(input)
       else
@@ -60,15 +61,15 @@ class RockPaperScissors
   end
 
   def compare_selections(input, computer_play)
-    if @game_play[input][computer_play]
-      puts "#{input.capitalize} #{@game_play[input][computer_play]} #{computer_play.capitalize}. You win!!\n\n"
-      @human_wins = @human_wins + 1
-    elsif @game_play[computer_play][input]
-      puts "#{computer_play.to_s.capitalize} #{@game_play[computer_play][input]} #{input.capitalize}.  The Computer Wins.  Loser.\n\n"
-      @computer_wins = @computer_wins + 1
+    if game_play[input][computer_play]
+      puts "#{input.capitalize} #{game_play[input][computer_play]} #{computer_play.capitalize}. You win!!\n\n"
+      @human_wins += 1
+    elsif game_play[computer_play][input]
+      puts "#{computer_play.to_s.capitalize} #{game_play[computer_play][input]} #{input.capitalize}.  The Computer Wins.  Loser.\n\n"
+      @computer_wins += 1
     else
       puts "You tied the computer"
-      @ties = @ties + 1
+      @ties += 1
     end
   end
 
@@ -76,11 +77,11 @@ class RockPaperScissors
     if @game_count > 1
       computer_play = ai_selects
     else
-      computer_play = @game_play.keys.sample(1).first
+      computer_play = game_play.keys.sample(1).first
     end
     puts "The Computer played #{computer_play.to_s.capitalize}"
     compare_selections(input, computer_play)
-    @game_count = @game_count + 1
+    @game_count += 1
   end
 
   def display_stats
